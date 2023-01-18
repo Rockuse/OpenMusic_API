@@ -15,13 +15,19 @@ const init = async () => {
       },
     },
   });
-  await server.register({
-    plugin: api,
-    options: {
-      service: services,
-      validator: Validator,
-    },
-  });
+  const arr = [];
+  for (let i = 0; i < api.length - 1; i += 1) {
+    const element = {
+      plugin: api[i],
+      options: {
+        service: new services[i](),
+        validator: Validator[i],
+      },
+    };
+    arr.push(element);
+  }
+  await server.register(arr);
+
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
     const { response } = request;

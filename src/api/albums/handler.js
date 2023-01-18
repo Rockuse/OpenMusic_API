@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-import-module-exports
+// import autoBind from 'auto-bind';
 const autoBind = require('auto-bind');
 
 class Albums {
@@ -8,19 +10,20 @@ class Albums {
   }
 
   async postAlbum(request, h) {
-    this._validator.validateAlbums(request.payload);
+    await this._validator.validateAlbums(request.payload);
     const { name, year } = request.payload;
-    const id = this._service.addAlbum({ name, year });
+    const id = await this._service.addAlbum({ name, year });
     const response = h.response({
       status: 'success',
-      data: { albumid: id },
+      data: { albumId: id },
     });
     response.code(201);
     return response;
   }
 
   async getAlbum() {
-    const album = this._service.getAlbum();
+    // console.log('masuk')
+    const album = await this._service.getAlbum();
     const response = {
       status: 'success',
       data: album,
@@ -30,7 +33,7 @@ class Albums {
 
   async getAlbumById(request, h) {
     const { id } = request.params;
-    const album = this._service.getAlbumById(id);
+    const album = await this._service.getAlbumById(id);
     const response = h.response({
       status: 'success',
       data: { album },
@@ -40,9 +43,9 @@ class Albums {
   }
 
   async putAlbum(request, h) {
-    this._validator.validateAlbums(request.payload);
+    await this._validator.validateAlbums(request.payload);
     const { id } = request.params;
-    this._service.editAlbum(id, request.payload);
+    await this._service.editAlbum(id, request.payload);
     const response = h.response({
       status: 'success',
       message: 'Album berhasil diUpdate',
@@ -52,7 +55,7 @@ class Albums {
 
   async deleteAlbum(request, h) {
     const { id } = request.params;
-    this._service.deleteAlbum(id);
+    await this._service.deleteAlbum(id);
     const response = h.response({
       status: 'success',
       message: 'Album berhasil diHapus',
