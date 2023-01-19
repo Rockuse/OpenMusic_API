@@ -34,7 +34,9 @@ class AlbumsService {
   async getSongById(id, { title = '', performer = '' }) {
     const query = {
       // eslint-disable-next-line quotes
-      text: `SELECT * FROM "Songs" where id = $1 ${(title.length) ? `AND title like '%${title}%'` : ""} ${(performer.length) ? `AND performer like '%${performer}%'` : ""}`,
+      text: `SELECT * FROM "Songs" where id = $1 
+      ${(title.length) ? `AND title like '%${title}%'` : ''} 
+      ${(performer.length) ? `AND performer like '%${performer}%'` : ''}`,
       values: [id],
     };
     const result = await this._pool.query(query);

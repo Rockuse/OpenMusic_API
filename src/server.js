@@ -16,7 +16,7 @@ const init = async () => {
     },
   });
   const arr = [];
-  for (let i = 0; i < api.length - 1; i += 1) {
+  for (let i = 0; i < api.length; i += 1) {
     const element = {
       plugin: api[i],
       options: {
@@ -26,6 +26,7 @@ const init = async () => {
     };
     arr.push(element);
   }
+
   await server.register(arr);
 
   server.ext('onPreResponse', (request, h) => {

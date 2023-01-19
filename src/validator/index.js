@@ -1,6 +1,5 @@
 const InvariantError = require('../utils/exceptions/InvariantError');
-const AlbumsSchema = require('./albums/schema');
-const SongsSchema = require('./songs/schema');
+const { AlbumsSchema, SongsSchema } = require('./schema');
 
 const Validator = [
   {

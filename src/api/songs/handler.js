@@ -1,5 +1,4 @@
 const autoBind = require('auto-bind');
-const idGenerator = require('../../utils/generator');
 
 class Songs {
   constructor(service, validator) {
