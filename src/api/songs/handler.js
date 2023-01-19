@@ -20,12 +20,14 @@ class Songs {
   }
 
   async getSong(request, h) {
-    const { title, performer } = request.query;    
+    const { title, performer } = request.query;
     const songs = await this._service.getSong(title, performer);
-    return {
+    const response = h.response({
       status: 'success',
       data: { songs },
-    };
+    });
+    response.code(200);
+    return response;
   }
 
   async getSongById(request, h) {
@@ -33,29 +35,35 @@ class Songs {
     const { title, performer } = request.query;
 
     const song = await this._service.getSongById(id, title, performer);
-    return {
+    const response = h.response({
       status: 'success',
       data: { song },
-    };
+    });
+    response.code(200);
+    return response;
   }
 
   async putSong(request, h) {
     await this._validator.validateSongs(request.payload);
     const { id } = request.params;
     await this._service.editSongById(id, request.payload);
-    return {
+    const response = h.response({
       status: 'success',
       message: 'lagu berhasil diubah',
-    };
+    });
+    response.code(200);
+    return response;
   }
 
   async deleteSong(request, h) {
     const { id } = request.params;
     await this._service.deleteSongById(id);
-    return {
+    const response = h.response({
       status: 'success',
       message: 'lagu berhasil dihapus',
-    };
+    });
+    response.code(200);
+    return response;
   }
 }
 
