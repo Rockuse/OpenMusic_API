@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-import-module-exports
-// import autoBind from 'auto-bind';
+// eslint-disable-next-line import/no-extraneous-dependencies
 const autoBind = require('auto-bind');
 
 class Albums {
@@ -22,8 +21,9 @@ class Albums {
   }
 
   async getAlbum() {
-    // console.log('masuk')
+    console.log('masuk');
     const album = await this._service.getAlbum();
+    console.log('masuk1');
     const response = {
       status: 'success',
       data: album,
