@@ -1,9 +1,11 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
+const Jwt = require('@hapi/jwt');
 const ClientError = require('./utils/exceptions/ClientError');
 const api = require('./api');
-const services = require('./services');
+const Services = require('./services');
 const Validator = require('./validator');
+const TokenManager = require('./utils/tokenize/TokenManager');
 
 const init = async () => {
   const server = Hapi.server({
@@ -15,17 +17,51 @@ const init = async () => {
       },
     },
   });
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
   const arr = [];
   for (let i = 0; i < api.length; i += 1) {
     const element = {
       plugin: api[i],
       options: {
-        service: new services[i](),
+        service: new Services[i](),
         validator: Validator[i],
       },
     };
+    if (element.plugin.name === 'collaborations') {
+      element.options = { notesService: new Services[0](), ...element.options };
+    }
+
+    if (element.plugin.name === 'authentications') {
+      element.options = {
+        authenticationsService: new Services[i](),
+        usersService: new Services[i - 1](),
+        tokenManager: TokenManager,
+        ...element.options,
+      };
+      delete element.options.service;
+      element.options.service = [];
+    }
     arr.push(element);
   }
+  server.auth.strategy('openmusic_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
+  });
   //   console.log(arr);
   await server.register(arr);
 
@@ -49,7 +85,7 @@ const init = async () => {
       // penanganan server error sesuai kebutuhan
       const newResponse = h.response({
         status: 'error',
-        message: 'terjadi kegagalan pada server kami',
+        message: response.message,
       });
       newResponse.code(500);
       return newResponse;

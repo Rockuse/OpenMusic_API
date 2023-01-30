@@ -24,10 +24,13 @@ class SongsService {
     return result.rows[0].id;
   }
 
-  async getSong() {
-    const result = await this._pool.query('SELECT * FROM songs');
+  async getSong(title = '', performer = '') {
+    const query = {
+      text: `SELECT id,title,performer FROM songs ${(title.length || performer.length) ? 'where 1=1' : ''}  ${(title.length) ? `AND upper(title) like \'%${title.toUpperCase()}%\'` : ''} ${(performer.length) ? `AND upper(performer) like \'%${performer.toUpperCase()}%\'` : ''}`,
+    };
+    const result = await this._pool.query(query);
     if (!result.rows.length) {
-      // throw new NotFoundError('Lagu tidak ditemukan');
+      throw new NotFoundError('Lagu tidak ditemukan');
     }
     return result.rows;
   }
@@ -51,7 +54,7 @@ class SongsService {
   async getSongByAlbum(id) {
     const query = {
       // eslint-disable-next-line quotes
-      text: `SELECT * FROM "Songs"  where "albumId" = $1`,
+      text: `SELECT * FROM songs  where "albumId" = $1`,
       values: [id],
     };
     const result = await this._pool.query(query);
@@ -60,10 +63,10 @@ class SongsService {
 
   async editSongById(id, payload) {
     const {
-      title, year, genre, performer, duration, albumId,
+      title, year, genre, performer, duration, albumId = '',
     } = payload;
     const query = {
-      text: 'UPDATE songs set title=$1, year=$2, genre=$3, performer=$4, duration=$5, albumId=$6 where id=$7 RETURNING ID',
+      text: 'UPDATE songs set title=$1, year=$2, genre=$3, performer=$4, duration=$5, "albumId"=$6 where id=$7 RETURNING ID',
       values: [title, year, genre, performer, duration, albumId, id],
     };
     const result = await this._pool.query(query);

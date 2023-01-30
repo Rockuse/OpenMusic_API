@@ -1,8 +1,8 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const idGenerator = require('../utils/generator');
-const InvariantError = require('../utils/exceptions/InvariantError');
 const NotFoundError = require('../utils/exceptions/NotFoundError');
+const InvariantError = require('../utils/exceptions/InvariantError');
 
 class UserService {
   constructor() {
@@ -10,7 +10,7 @@ class UserService {
   }
 
   async addUser({ username, password, fullname }) {
-    this.verifyUsername(username);
+    await this.verifyUsername(username);
     const id = idGenerator('user');
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = {

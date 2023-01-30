@@ -1,5 +1,4 @@
 const autoBind = require('auto-bind');
-const ClientError = require('../../utils/exceptions/ClientError');
 
 class UsersHandler {
   constructor(service, validator) {
@@ -9,7 +8,7 @@ class UsersHandler {
   }
 
   async postUser(request, h) {
-    this._validator.validateUserPayload(request.payload);
+    await this._validator.validateUserPayload(request.payload);
 
     const { username, password, fullname } = request.payload;
     const id = await this._service.addUser({ username, password, fullname });

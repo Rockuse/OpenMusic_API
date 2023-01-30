@@ -46,4 +46,4 @@ exports.up = (pgm) => {
   });
 };
 
-exports.down = (pgm) => { pgm.dropTable('Albums'); pgm.dropTable('Songs'); };
+exports.down = (pgm) => { pgm.dropTable('albums'); pgm.dropTable('songs'); };
