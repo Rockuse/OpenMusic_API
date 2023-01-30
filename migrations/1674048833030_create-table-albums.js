@@ -1,9 +1,7 @@
 /* eslint-disable camelcase */
 
-exports.shorthands = undefined;
-
 exports.up = (pgm) => {
-  pgm.createTable('Albums', {
+  pgm.createTable('albums', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
@@ -17,7 +15,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
   });
-  pgm.createTable('Songs', {
+  pgm.createTable('songs', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,

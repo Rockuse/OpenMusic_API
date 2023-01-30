@@ -12,7 +12,7 @@ class AlbumsService {
   async addAlbum({ name, year }) {
     const id = idGenerator('album');
     const query = {
-      text: 'INSERT INTO "Albums" VALUES($1,$2,$3) RETURNING id',
+      text: 'INSERT INTO albums VALUES($1,$2,$3) RETURNING id',
       values: [id, name, year],
     };
     const result = await this._pool.query(query);
@@ -24,7 +24,7 @@ class AlbumsService {
   }
 
   async getAlbum() {
-    const result = await this._pool.query('SELECT * FROM "Albums"');
+    const result = await this._pool.query('SELECT * FROM albums');
     if (!result.rows.length) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
@@ -33,7 +33,7 @@ class AlbumsService {
 
   async getAlbumById(id) {
     const query = {
-      text: 'SELECT * FROM "Albums" WHERE id=$1',
+      text: 'SELECT * FROM albums WHERE id=$1',
       values: [id],
     };
     const result = await this._pool.query(query);
@@ -46,7 +46,7 @@ class AlbumsService {
 
   async editAlbum(id, { name, year }) {
     const query = {
-      text: 'UPDATE "Albums" SET name=$2,year=$3  WHERE id=$1 RETURNING id',
+      text: 'UPDATE albums SET name=$2,year=$3  WHERE id=$1 RETURNING id',
       values: [id, name, year],
     };
     const result = await this._pool.query(query);
@@ -58,7 +58,7 @@ class AlbumsService {
 
   async deleteAlbum(id) {
     const query = {
-      text: 'DELETE FROM "Albums" WHERE id=$1 RETURNING ID',
+      text: 'DELETE FROM albums WHERE id=$1 RETURNING ID',
       values: [id],
     };
     const result = await this._pool.query(query);

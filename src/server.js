@@ -26,7 +26,7 @@ const init = async () => {
     };
     arr.push(element);
   }
-
+  // console.log(arr);
   await server.register(arr);
 
   server.ext('onPreResponse', (request, h) => {
@@ -57,6 +57,7 @@ const init = async () => {
     // jika bukan error, lanjutkan dengan response sebelumnya (tanpa terintervensi)
     return h.continue;
   });
+
   await server.start();
   console.log('server is running');
 };

@@ -13,7 +13,7 @@ class AlbumsService {
   }) {
     const id = idGenerator('songs');
     const query = {
-      text: 'INSERT INTO "Songs" values($1,$2,$3,$4,$5,$6,$7) RETURNING ID',
+      text: 'INSERT INTO songs values($1,$2,$3,$4,$5,$6,$7) RETURNING ID',
       values: [id, title, year, genre, performer, duration, albumId],
     };
     const result = await this._pool.query(query);
@@ -24,7 +24,7 @@ class AlbumsService {
   }
 
   async getSong() {
-    const result = await this._pool.query('SELECT * FROM "Songs"');
+    const result = await this._pool.query('SELECT * FROM songs');
     if (!result.rows.length) {
       throw new NotFoundError('Lagu tidak ditemukan');
     }
@@ -34,7 +34,7 @@ class AlbumsService {
   async getSongById(id, { title = '', performer = '' }) {
     const query = {
       // eslint-disable-next-line quotes
-      text: `SELECT * FROM "Songs" where id = $1 
+      text: `SELECT * FROM songs where id = $1 
       ${(title.length) ? `AND title like '%${title}%'` : ''} 
       ${(performer.length) ? `AND performer like '%${performer}%'` : ''}`,
       values: [id],
@@ -51,7 +51,7 @@ class AlbumsService {
       title, year, genre, performer, duration, albumId,
     } = payload;
     const query = {
-      text: 'UPDATE "Songs" set title=$1, year=$2, genre=$3, performer=$4, duration=$5, albumId=$6 where id=$7 RETURNING ID',
+      text: 'UPDATE songs set title=$1, year=$2, genre=$3, performer=$4, duration=$5, albumId=$6 where id=$7 RETURNING ID',
       values: [title, year, genre, performer, duration, albumId, id],
     };
     const result = this._pool.query(query);
@@ -63,7 +63,7 @@ class AlbumsService {
 
   async deleteSongById(id) {
     const query = {
-      text: 'DELETE FROM "Songs" where id=$1 RETURNING ID',
+      text: 'DELETE FROM songs where id=$1 RETURNING ID',
       values: [id],
     };
     const result = this._pool.query(query);

@@ -5,4 +5,4 @@ const AlbumsSchema = Joi.object({
   year: Joi.number().required(),
 });
 
-module.exports = AlbumsSchema;
+module.exports = { AlbumsSchema };
