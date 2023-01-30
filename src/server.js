@@ -26,7 +26,7 @@ const init = async () => {
     };
     arr.push(element);
   }
-  // console.log(arr);
+  //   console.log(arr);
   await server.register(arr);
 
   server.ext('onPreResponse', (request, h) => {

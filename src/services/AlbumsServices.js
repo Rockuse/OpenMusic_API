@@ -1,12 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const { Pool } = require('pg');
+const autoBind = require('auto-bind');
 const InvariantError = require('../utils/exceptions/InvariantError');
 const NotFoundError = require('../utils/exceptions/NotFoundError');
-
+const SongsService = require('./SongsServices');
 const idGenerator = require('../utils/generator');
+const mapDBModel = require('../utils/mapDbModel');
 
 class AlbumsService {
   constructor() {
     this._pool = new Pool();
+    autoBind(this);
   }
 
   async addAlbum({ name, year }) {
@@ -19,7 +23,7 @@ class AlbumsService {
     if (!result.rows[0].id) {
       throw new InvariantError('Albums Gagal Ditambahkan');
     }
-    console.log(typeof result.rows[0].id);
+    // console.log(typeof result.rows[0].id);
     return result.rows[0].id;
   }
 
@@ -36,12 +40,12 @@ class AlbumsService {
       text: 'SELECT * FROM albums WHERE id=$1',
       values: [id],
     };
-    const result = await this._pool.query(query);
-    // console.log(result.rows);
-    if (!result.rows.length) {
+    const albums = await this._pool.query(query);
+    if (!albums.rows.length) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
-    return result.rows[0];
+    const songs = await new SongsService().getSongByAlbum(id);
+    return mapDBModel(albums.rows[0], songs);
   }
 
   async editAlbum(id, { name, year }) {
