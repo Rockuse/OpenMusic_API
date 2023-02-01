@@ -15,6 +15,11 @@ const routes = (handler) => [
     handler: (request, h) => handler.getPlaylistById(request, h),
   },
   {
+    method: 'GET',
+    path: '/playlists/{id}/songs',
+    handler: (request, h) => handler.getPlaylistSongs(request, h),
+  },
+  {
     method: 'PUT',
     path: '/playlists/{id}',
     handler: (request, h) => handler.putPlaylistById(request, h),
