@@ -79,8 +79,11 @@ exports.up = (pgm) => {
     },
   });
   pgm.addConstraint('playlists', 'fk_playlists.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
-  // pgm.addConstraint('songs', 'fk_songs.song_id_album.id',
-  // 'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE');
+  pgm.addConstraint(
+    'songs',
+    'fk_songs.song_id_album.id',
+    'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE',
+  );
 
   pgm.addConstraint('playlist_songs', 'fk_songs.song_id_song.id', 'FOREIGN KEY(song_id) REFERENCES songs(id) ON DELETE CASCADE');
   pgm.addConstraint('playlist_songs', 'fk_songs.playlist_id_playlist.id', 'FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE');

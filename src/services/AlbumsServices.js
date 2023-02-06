@@ -5,7 +5,7 @@ const InvariantError = require('../utils/exceptions/InvariantError');
 const NotFoundError = require('../utils/exceptions/NotFoundError');
 const SongsService = require('./SongsServices');
 const idGenerator = require('../utils/generator');
-const mapDBModel = require('../utils/mapDbModel');
+const { mapDBModel } = require('../utils/mapDbModel');
 
 class AlbumsService {
   constructor() {

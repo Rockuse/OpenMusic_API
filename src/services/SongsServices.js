@@ -10,7 +10,7 @@ class SongsService {
   }
 
   async addSong({
-    title, year, genre, performer, duration = 0, albumId = '',
+    title, year, genre, performer, duration = 0, albumId = 'undefined',
   }) {
     const id = idGenerator('songs');
     const query = {
@@ -63,7 +63,7 @@ class SongsService {
 
   async editSongById(id, payload) {
     const {
-      title, year, genre, performer, duration, albumId = '',
+      title, year, genre, performer, duration, albumId = 'undefined',
     } = payload;
     const query = {
       text: 'UPDATE songs set title=$1, year=$2, genre=$3, performer=$4, duration=$5, "albumId"=$6 where id=$7 RETURNING ID',

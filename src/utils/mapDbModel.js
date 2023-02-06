@@ -11,5 +11,12 @@ const mapDBModel = (albums, songs) => {
   );
   return data;
 };
-
-module.exports = mapDBModel;
+const mapPlaylist = (item) => ({
+  playlist: {
+    id: item.playlist_id[0],
+    name: item.name[0],
+    username: item.username[0],
+    songs: item.map((ele) => [{ id: ele.id, title: ele.id, performer: ele.performer }]),
+  },
+});
+module.exports = { mapDBModel, mapPlaylist };

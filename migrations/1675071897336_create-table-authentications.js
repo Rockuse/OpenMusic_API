@@ -7,6 +7,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
   });
+  pgm.sql("INSERT INTO albums(id, name, year) VALUES ('undefined', 'undefined', '2023')");
 };
 
 exports.down = (pgm) => {
