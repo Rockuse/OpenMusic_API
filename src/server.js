@@ -73,7 +73,7 @@ const init = async () => {
       if (response instanceof ClientError) {
         const newResponse = h.response({
           status: 'fail',
-          message: response.message,
+          message: response,
         });
         newResponse.code(response.statusCode);
         return newResponse;
@@ -85,7 +85,7 @@ const init = async () => {
       // penanganan server error sesuai kebutuhan
       const newResponse = h.response({
         status: 'error',
-        message: response.message,
+        message: response,
       });
       newResponse.code(500);
       return newResponse;

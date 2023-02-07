@@ -1,3 +1,4 @@
+const { response } = require('@hapi/hapi/lib/validation');
 const autoBind = require('auto-bind');
 
 class PlaylistHandler {
@@ -8,9 +9,11 @@ class PlaylistHandler {
   }
 
   async postPlaylist(request, h) {
-    await this._validator.validatePlaylist(request.payload);
-    const { name } = request.payload;
     const { id: credentialId } = request.auth.credentials;
+    request.payload.owner = credentialId;
+    await this._validator.validatePlaylist(request.payload);
+    // console.log(request.payload);
+    const { name } = request.payload;
     const id = await this._service.addPlaylist({ name, credentialId });
     const res = h.response({
       status: 'success',
@@ -23,7 +26,18 @@ class PlaylistHandler {
   }
 
   async getPlaylist(request, h) {
-
+    try {
+      const { id: credentialId } = request.auth.credentials;
+      await this._service.verifyPlaylistAccess({ credentialId });
+      const playlists = await this._service.getAllPlaylist({ credentialId });
+      const res = h.response({
+        status: 'success',
+        data: { playlists },
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async deletePlaylistById(request, h) {

@@ -9,21 +9,30 @@ class Playlist {
     this._pool = new Pool();
   }
 
-  async addPlaylist({ name, owner }) {
+  async addPlaylist({ name, credentialId }) {
     const id = idGenerator('playlist');
     const query = {
       text: 'INSERT INTO playlists values($1,$2,$3) returning id',
-      values: [id, name, owner],
+      values: [id, name, credentialId],
     };
+    // console.log(query);
     const result = await this._pool.query(query);
     if (!result.rowCount) {
       throw new InvariantError('Playlist Gagal ditambahkan');
     }
-    return result.rows[0];
+    return result.rows[0].id;
+  }
+
+  async getAllPlaylist({ credentialId }) {
+    const results = await this._pool.query(`SELECT playlists.id,username,name FROM playlists inner join users on owner = users.id where owner=\'${credentialId}\'`);
+    if (!results.rowCount) {
+      throw new NotFoundError('Playlist tidak ditemukan');
+    }
+    return results.rows;
   }
 
   async getPlaylist({ id }) {
-    const results = await this._pool.query(`SELECT * FROM playlist where id=\'${id}\'`);
+    const results = await this._pool.query(`SELECT * FROM playlists where id=\'${id}\'`);
     if (!results.rowCount) {
       throw new NotFoundError('Playlist tidak ditemukan');
     }
@@ -67,6 +76,23 @@ class Playlist {
     const result = await this._pool.query(query);
     if (!result.rowCount) {
       throw new InvariantError('Song dari Playlist Gagal dihapus');
+    }
+  }
+
+  async verifyPlaylistAccess({ credentialId }) {
+    try {
+      await this.verifyPlaylistOwner(credentialId);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+    }
+  }
+
+  async verifyPlaylistOwner(id) {
+    const result = await this._pool.query(`select * from  playlists where owner=\'${id}\'`);
+    if (!result.rowCount) {
+      throw new NotFoundError('Data tidak ditemukan');
     }
   }
 }
