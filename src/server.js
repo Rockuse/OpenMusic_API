@@ -32,7 +32,7 @@ const init = async () => {
       },
     };
     if (element.plugin.name === 'collaborations') {
-      element.options = { notesService: new Services[0](), ...element.options };
+      element.options = { playlistService: new Services[4](), ...element.options };
     }
 
     if (element.plugin.name === 'authentications') {
@@ -47,6 +47,7 @@ const init = async () => {
     }
     arr.push(element);
   }
+  // console.log(arr);
   server.auth.strategy('openmusic_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {

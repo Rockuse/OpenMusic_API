@@ -7,5 +7,6 @@ const PlaylistSchema = Joi.object({
 
 const PlaylistSongsSchema = Joi.object({
   songId: Joi.string().required(),
+  id: Joi.string().required(),
 });
 module.exports = { PlaylistSchema, PlaylistSongsSchema };
