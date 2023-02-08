@@ -1,9 +1,10 @@
-const { response } = require('@hapi/hapi/lib/validation');
 const autoBind = require('auto-bind');
+const SongsService = require('../../services/SongsServices');
 
 class PlaylistHandler {
   constructor(service, validator) {
     this._service = service;
+    this._songService = new SongsService();
     this._validator = validator;
     autoBind(this);
   }
@@ -28,8 +29,7 @@ class PlaylistHandler {
   async getPlaylist(request, h) {
     try {
       const { id: credentialId } = request.auth.credentials;
-      await this._service.verifyPlaylistAccess({ credentialId });
-      const playlists = await this._service.getAllPlaylist({ credentialId });
+      const playlists = await this._service.getAllPlaylist(credentialId);
       const res = h.response({
         status: 'success',
         data: { playlists },
@@ -37,6 +37,7 @@ class PlaylistHandler {
       return res;
     } catch (error) {
       console.log(error);
+      return false;
     }
   }
 
@@ -45,7 +46,20 @@ class PlaylistHandler {
   }
 
   async postPlaylistSongs(request, h) {
-
+    const temp = { ...request.payload, ...request.query };
+    await this._validator.validatePlaylistSong(temp);
+    const { id: credentialId } = request.auth.credentials;
+    console.log(request);
+    await this._songService.getSongById(temp.songId);
+    await this._service.verifyPlaylistAccess(credentialId, temp.id);
+    const id = await this._service.addSongToPlaylist(temp);
+    const res = h.response({
+      status: 'success',
+      message: 'Lagu berhasil ditambahkan',
+      data: { id },
+    });
+    res.code(201);
+    return res;
   }
 
   async putPlaylistSongById(request, h) {

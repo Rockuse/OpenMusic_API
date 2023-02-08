@@ -16,6 +16,5 @@
         "no-console": ["error",{"allow":["log"]}],
         "no-underscore-dangle":"off",
         "global-require":"off",
-        "no-useless-escape":"off"
-    }
+        "no-useless-escape":"off"    }
 }
