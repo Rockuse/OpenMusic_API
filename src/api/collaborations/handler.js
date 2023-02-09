@@ -34,7 +34,7 @@ class CollaborationsHandler {
       const { playlistId, userId } = request.payload;
 
       await this._playlistService.verifyPlaylistOwner(credentialId, playlistId);
-      await this._collaborationsService.deleteCollaboration(playlistId, userId);
+      await this._collaborationsService.deleteCollaborations(playlistId, userId);
 
       return {
         status: 'success',

@@ -132,7 +132,7 @@ class Playlists {
       ${songId !== '' ? `and song_id=\'${songId}\'` : ' '} 
       and playlist_id=\'${playlistId}\' returning id`,
     };
-    console.log(query.text);
+    // console.log(query.text);
     const result = await this._pool.query(query);
     if (!result.rowCount) {
       throw new InvariantError('Playlist Activities Gagal ditambahkan');
@@ -150,7 +150,7 @@ class Playlists {
       where a.id=\'${id}\'
       order by b.time`,
     };
-    console.log(query.text);
+    // console.log(query.text);
     const result = await this._pool.query(query);
     if (!result.rowCount) {
       throw new NotFoundError('Activities tidak ditemukan');
