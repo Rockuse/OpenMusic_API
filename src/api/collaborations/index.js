@@ -1,4 +1,5 @@
 const CollaborationsHandler = require('./handler');
+const UserService = require('../../services/UserService');
 const routes = require('./routes');
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
       service,
       playlistService,
       validator,
+      new UserService(),
     );
     server.route(routes(collaborationsHandler));
   },

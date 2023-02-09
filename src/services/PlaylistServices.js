@@ -13,23 +13,27 @@ class Playlists {
   }
 
   // -------VERIFY------------
-  async verifyPlaylistAccess(credentialId, id = '') {
+  async verifyPlaylistAccess(credentialId, id, del = false) {
     try {
       await this.verifyPlaylistOwner(credentialId, id);
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof NotFoundError) {
         throw error;
       }
       try {
         await this._collaborationServices.verifyCollaborations(id, credentialId);
-      } catch {
-        throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+        if (del) {
+          if (error instanceof AuthorizationError) {
+            throw error;
+          }
+        }
+      } catch (err) {
+        throw new AuthorizationError(err.message);
       }
     }
   }
 
   async verifyPlaylistOwner(credentialId, id) {
-    // -------console.log(`select * from  playlists where id=\'${id}\'`);------------
     const playlist = await this._pool.query(`select * from  playlists where id=\'${id}\'`);
     if (!playlist.rowCount) {
       throw new NotFoundError('Playlist tidak ditemukan');
@@ -55,10 +59,13 @@ class Playlists {
   }
 
   async getAllPlaylist(credentialId) {
-    const results = await this._pool.query(`SELECT playlists.id,username,name FROM playlists inner join users on owner = users.id where owner=\'${credentialId}\'`);
-    if (!results.rowCount) {
-      throw new NotFoundError('Playlist tidak ditemukan');
-    }
+    const results = await this._pool.query(`SELECT playlists.id,username,name FROM playlists 
+    inner join users on owner = users.id 
+    left join collaborations on collaborations.playlist_id=playlists.id
+    where owner=\'${credentialId}\' or collaborations.user_id=\'${credentialId}\'`);
+    // if (!results.rowCount) {
+    //   throw new NotFoundError('Playlist tidak ditemukan');
+    // }
     return results.rows;
   }
 
@@ -106,7 +113,7 @@ class Playlists {
     };
     const results = await this._pool.query(query);
     if (!results.rowCount) {
-      throw new NotFoundError('Playlist tidak ditemukan');
+      throw new NotFoundError('Lagu tidak ditemukan tidak ditemukan');
     }
     return mapPlaylist(results.rows);
   }
@@ -132,12 +139,7 @@ class Playlists {
       ${songId !== '' ? `and song_id=\'${songId}\'` : ' '} 
       and playlist_id=\'${playlistId}\' returning id`,
     };
-    // console.log(query.text);
-    const result = await this._pool.query(query);
-    if (!result.rowCount) {
-      throw new InvariantError('Playlist Activities Gagal ditambahkan');
-    }
-    return result.rows[0].id;
+    await this._pool.query(query);
   }
 
   async getPlaylistActivities(id) {
@@ -150,7 +152,6 @@ class Playlists {
       where a.id=\'${id}\'
       order by b.time`,
     };
-    // console.log(query.text);
     const result = await this._pool.query(query);
     if (!result.rowCount) {
       throw new NotFoundError('Activities tidak ditemukan');

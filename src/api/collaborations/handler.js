@@ -2,10 +2,11 @@ const autoBind = require('auto-bind');
 const ClientError = require('../../utils/exceptions/ClientError');
 
 class CollaborationsHandler {
-  constructor(collaborationsService, playlistService, validator) {
+  constructor(collaborationsService, playlistService, validator, userService) {
     this._collaborationsService = collaborationsService;
     this._playlistService = playlistService;
     this._validator = validator;
+    this._userService = userService;
     autoBind(this);
   }
 
@@ -13,7 +14,8 @@ class CollaborationsHandler {
     this._validator.validateCollaborations(request.payload);
     const { id: credentialId } = request.auth.credentials;
     const { playlistId, userId } = request.payload;
-    await this._playlistService.verifyPlaylistOwner(userId, playlistId);
+    await this._playlistService.verifyPlaylistOwner(credentialId, playlistId);
+    await this._userService.getUserById(userId);
     const collaborationId = await this._collaborationsService.addCollaboration(playlistId, userId);
 
     const response = h.response({
