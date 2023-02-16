@@ -45,9 +45,15 @@ const init = async () => {
       delete element.options.service;
       element.options.service = [];
     }
+    if (element.plugin.name === 'exports') {
+      element.options = {
+        playlistsService: new Services[4](),
+        ...element.options,
+      };
+    }
     arr.push(element);
   }
-  // console.log(arr);
+  console.log(arr);
   server.auth.strategy('openmusic_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {

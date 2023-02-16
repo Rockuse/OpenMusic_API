@@ -12,5 +12,6 @@ module.exports = [
   Users,
   Authentications,
   Playlists,
+  Collaborations,
   Exports,
 ];

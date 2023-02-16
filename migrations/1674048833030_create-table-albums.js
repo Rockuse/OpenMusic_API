@@ -14,6 +14,9 @@ exports.up = (pgm) => {
       type: 'INTEGER',
       notNull: true,
     },
+    cover: {
+      type: 'VARCHAR(255)',
+    },
   });
   pgm.createTable('songs', {
     id: {

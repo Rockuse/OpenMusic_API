@@ -1,4 +1,3 @@
-const ClientError = require('../../utils/exceptions/ClientError');
 const autoBind = require('auto-bind');
 class ExportsHandler {
   constructor(exportsService, playlistsService, validator) {
@@ -9,7 +8,6 @@ class ExportsHandler {
   }
 
   async postExportPlaylistHandler(request, h) {
-    try {
       this._validator.validateExportPlaylistPayload(request.payload);
       const {id: userId} = request.auth.credentials;
 
@@ -32,24 +30,6 @@ class ExportsHandler {
       });
       response.code(201);
       return response;
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      const response = h.response({
-        status: 'error',
-        message: 'Maaf, terjadi kesalahan pada server',
-      });
-      response.code(500);
-      console.error(error);
-      return response;
-    }
   }
 }
 

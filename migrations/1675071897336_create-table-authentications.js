@@ -26,4 +26,5 @@ exports.up = (pgm) => {
 
 exports.down = (pgm) => {
   pgm.dropTable('authentications');
+  pgm.dropTable('user_album_likes');
 };
