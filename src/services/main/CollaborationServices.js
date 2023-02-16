@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
-const InvariantError = require('../utils/exceptions/InvariantError');
-const idGenerator = require('../utils/generator');
+const InvariantError = require('../../utils/exceptions/InvariantError');
+const idGenerator = require('../../utils/generator');
 
 class CollaborationServices {
   constructor() {

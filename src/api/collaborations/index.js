@@ -1,5 +1,5 @@
 const CollaborationsHandler = require('./handler');
-const UserService = require('../../services/UserService');
+const UserService = require('../../services/main/UserService');
 const routes = require('./routes');
 
 module.exports = {

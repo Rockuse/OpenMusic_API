@@ -35,12 +35,12 @@ class UsersHandler {
   async getUsersByUsernameHandler(request, h) {
     const { username = '' } = request.query;
     const users = await this._service.getUsersByUsername(username);
-    return {
+    const res = h.response({
       status: 'success',
-      data: {
-        users,
-      },
-    };
+      data: { users },
+
+    });
+    return res;
   }
 }
 

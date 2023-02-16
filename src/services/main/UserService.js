@@ -1,9 +1,9 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
-const idGenerator = require('../utils/generator');
-const NotFoundError = require('../utils/exceptions/NotFoundError');
-const InvariantError = require('../utils/exceptions/InvariantError');
-const AuthError = require('../utils/exceptions/AuthError');
+const idGenerator = require('../../utils/generator');
+const NotFoundError = require('../../utils/exceptions/NotFoundError');
+const InvariantError = require('../../utils/exceptions/InvariantError');
+const AuthError = require('../../utils/exceptions/AuthError');
 
 class UserService {
   constructor() {

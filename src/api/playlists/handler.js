@@ -1,5 +1,5 @@
 const autoBind = require('auto-bind');
-const SongsService = require('../../services/SongsServices');
+const SongsService = require('../../services/main/SongsServices');
 
 class PlaylistHandler {
   constructor(service, validator) {

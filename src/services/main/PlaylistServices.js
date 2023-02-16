@@ -1,10 +1,10 @@
 const { Pool } = require('pg');
-const InvariantError = require('../utils/exceptions/InvariantError');
-const NotFoundError = require('../utils/exceptions/NotFoundError');
-const AuthorizationError = require('../utils/exceptions/AuthorizationError');
+const InvariantError = require('../../utils/exceptions/InvariantError');
+const NotFoundError = require('../../utils/exceptions/NotFoundError');
+const AuthorizationError = require('../../utils/exceptions/AuthorizationError');
 const CollaborationServices = require('./CollaborationServices');
-const idGenerator = require('../utils/generator');
-const { mapPlaylist, mapActivities } = require('../utils/mapDbModel');
+const idGenerator = require('../../utils/generator');
+const { mapPlaylist, mapActivities } = require('../../utils/mapDbModel');
 
 class Playlists {
   constructor() {

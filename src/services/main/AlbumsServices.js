@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const { Pool } = require('pg');
 const autoBind = require('auto-bind');
-const InvariantError = require('../utils/exceptions/InvariantError');
-const NotFoundError = require('../utils/exceptions/NotFoundError');
+const InvariantError = require('../../utils/exceptions/InvariantError');
+const NotFoundError = require('../../utils/exceptions/NotFoundError');
 const SongsService = require('./SongsServices');
-const idGenerator = require('../utils/generator');
-const { mapDBModel } = require('../utils/mapDbModel');
+const idGenerator = require('../../utils/generator');
+const { mapDBModel } = require('../../utils/mapDbModel');
 
 class AlbumsService {
   constructor() {

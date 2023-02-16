@@ -7,6 +7,20 @@ exports.up = (pgm) => {
       notNull: true,
     },
   });
+  pgm.createTable('user_album_likes', {
+    id: {
+      type: 'TEXT',
+      notNull: true,
+    },
+    user_id: {
+      type: 'TEXT',
+      notNull: true,
+    },
+    album_id: {
+      type: 'TEXT',
+      notNull: true,
+    },
+  });
   pgm.sql("INSERT INTO albums(id, name, year) VALUES ('undefined', 'undefined', '2023')");
 };
 

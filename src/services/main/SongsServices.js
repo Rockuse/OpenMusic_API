@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-escape */
 const { Pool } = require('pg');
-const InvariantError = require('../utils/exceptions/InvariantError');
-const NotFoundError = require('../utils/exceptions/NotFoundError');
-const idGenerator = require('../utils/generator');
+const InvariantError = require('../../utils/exceptions/InvariantError');
+const NotFoundError = require('../../utils/exceptions/NotFoundError');
+const idGenerator = require('../../utils/generator');
 
 class SongsService {
   constructor() {
