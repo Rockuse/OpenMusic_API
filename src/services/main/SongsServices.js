@@ -29,7 +29,7 @@ class SongsService {
       text: `SELECT id,title,performer FROM songs ${(title.length || performer.length) ? 'where 1=1' : ''}  ${(title.length) ? `AND upper(title) like \'%${title.toUpperCase()}%\'` : ''} ${(performer.length) ? `AND upper(performer) like \'%${performer.toUpperCase()}%\'` : ''}`,
     };
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Lagu tidak ditemukan');
     }
     return result.rows;

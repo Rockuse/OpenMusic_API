@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const folder = path.resolve(__dirname, '../../api/uploads/file/images');
+const folder = path.resolve(__dirname, '../../api/albums/file/images');
 class StorageService {
   constructor() {
     this._folder = folder;

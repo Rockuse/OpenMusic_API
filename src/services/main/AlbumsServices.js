@@ -9,6 +9,7 @@ const { mapDBModel } = require('../../utils/mapDbModel');
 class AlbumsService {
   constructor(cache) {
     this._pool = new Pool();
+    this._songService= new SongsService()
     this._cacheService= cache
     autoBind(this);
   }
@@ -23,7 +24,6 @@ class AlbumsService {
     if (!result.rows[0].id) {
       throw new InvariantError('Albums Gagal Ditambahkan');
     }
-    // console.log(typeof result.rows[0].id);
     return result.rows[0].id;
   }
 
@@ -44,7 +44,7 @@ class AlbumsService {
     if (!albums.rows.length) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
-    const songs = await new SongsService().getSongByAlbum(id);
+    const songs = await this._songService.getSongByAlbum(id);
     return mapDBModel(albums.rows[0], songs);
   }
 
@@ -111,7 +111,6 @@ class AlbumsService {
     } else {
       await this.deleteAlbumLikeById(albumId, userId);
     }
-
     await this._cacheService.delete(`album-likes:${albumId}`);
   }
 

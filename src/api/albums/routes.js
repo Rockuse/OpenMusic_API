@@ -44,7 +44,7 @@ const routes = (handler) => [
     path: '/upload/images/{param*}',
     handler: {
       directory: {
-        path: path.join(__dirname, '/file/images/album_cover'),
+        path: path.join(__dirname, '/file/images'),
       },
     },
   },

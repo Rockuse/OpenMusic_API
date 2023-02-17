@@ -76,12 +76,12 @@ class Albums {
       const url = `http://${config.app.host}:${config.app.port}/upload/images/${filename}`;
       await this._service.editAlbumCoverById(id, url);
 
-      const response = h.response({
+      const res = h.response({
         status: 'success',
         message: 'Sampul berhasil diunggah',
       });
-      response.code(201);
-      return response;
+      res.code(201);
+      return res;
   }
 
   async postLikeAlbumById(request, h) {
@@ -91,28 +91,30 @@ class Albums {
       await this._service.getAlbumById(id);
       await this._service.addAlbumLikeById(id, credentialId);
 
-      const response = h.response({
+      const res = h.response({
         status: 'success',
         message: 'Operasi berhasil dilakukan',
       });
-      response.code(201);
-      return response;
+      res.code(201);
+      return res;
   }
 
   async getAlbumLikesById(request, h) {
       const {id} = request.params;
       const {cache, likes} = await this._service.getAlbumLikesById(id);
 
-      const response = h.response({
+      const res = h.response({
         status: 'success',
         data: {
           likes,
         },
       });
 
-      if (cache) response.header('X-Data-Source', 'cache');
+      if (cache){
+        res.header('X-Data-Source', 'cache')
+    }
 
-      return response;
+      return res;
   }
 // V3
 

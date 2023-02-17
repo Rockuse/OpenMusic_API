@@ -27,7 +27,7 @@ const init = async () => {
     const element = {
       plugin: api[i],
       options: {
-        service: new Services[i](new Services[7]()),
+        service: new Services[i](new Services[8]()),
         validator: Validator[i],
       },
     };
