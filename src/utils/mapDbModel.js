@@ -6,6 +6,7 @@ const mapDBModel = (albums, songs) => {
       id: albums.id,
       name: albums.name,
       year: albums.year,
+      coverUrl: albums.cover,
       songs,
     },
   );

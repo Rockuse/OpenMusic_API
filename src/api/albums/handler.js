@@ -69,7 +69,8 @@ class Albums {
   async postAlbumCover(request, h) {
       const {id} = request.params;
       const {cover} = request.payload;
-      this._validator.validateAlbumCoverHeaders(cover.hapi.headers);
+      console.log(id)
+      this._validator.validateAlbumCover(cover.hapi.headers);
 
       const filename = await this._storageService.writeFile(cover, cover.hapi);
       const url = `http://${config.app.host}:${config.app.port}/upload/images/${filename}`;

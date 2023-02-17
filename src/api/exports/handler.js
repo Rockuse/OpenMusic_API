@@ -7,15 +7,15 @@ class ExportsHandler {
     autoBind(this)
   }
 
-  async postExportPlaylistHandler(request, h) {
+  async postExportPlaylist(request, h) {
       this._validator.validateExportPlaylistPayload(request.payload);
       const {id: userId} = request.auth.credentials;
 
-      const {playlistId} = request.params;
-      await this._playlistsService.verifyPlaylistOwner(playlistId, userId);
+      const {id} = request.params;
+      await this._playlistsService.verifyPlaylistOwner(userId,id);
 
       const message = {
-        playlistId,
+        id,
         targetEmail: request.payload.targetEmail,
       };
 

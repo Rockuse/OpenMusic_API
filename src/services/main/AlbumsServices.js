@@ -6,11 +6,10 @@ const NotFoundError = require('../../utils/exceptions/NotFoundError');
 const SongsService = require('./SongsServices');
 const idGenerator = require('../../utils/generator');
 const { mapDBModel } = require('../../utils/mapDbModel');
-const CacheService = require('../redis/CacheService');
 class AlbumsService {
-  constructor() {
+  constructor(cache) {
     this._pool = new Pool();
-    this._cacheService= new CacheService()
+    this._cacheService= cache
     autoBind(this);
   }
 

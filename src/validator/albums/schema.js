@@ -6,5 +6,14 @@ const AlbumsSchema = Joi.object({
   year: Joi.number().integer().min(1900).max(currentYear)
     .required(),
 });
+const AlbumCoverSchema = Joi.object({
+  'content-type': Joi.string().valid(
+      'image/jpg',
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+  ).required(),
+}).unknown();
 
-module.exports = { AlbumsSchema };
+module.exports = { AlbumsSchema, AlbumCoverSchema };
