@@ -29,7 +29,7 @@ class AlbumsService {
 
   async getAlbum() {
     const result = await this._pool.query('SELECT * FROM albums');
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
     return result.rows;
@@ -41,7 +41,7 @@ class AlbumsService {
       values: [id],
     };
     const albums = await this._pool.query(query);
-    if (!albums.rows.length) {
+    if (!albums.rowCount) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
     const songs = await this._songService.getSongByAlbum(id);
@@ -54,7 +54,7 @@ class AlbumsService {
       values: [id, name, year],
     };
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
     return result.rows;
@@ -66,7 +66,7 @@ class AlbumsService {
       values: [id],
     };
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Albums Tidak Ditemukan');
     }
     return result.rows;
@@ -81,7 +81,7 @@ class AlbumsService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Gagal memperbarui album. Id tidak ditemukan.');
     }
   }
@@ -97,7 +97,7 @@ class AlbumsService {
 
     const resultCheck = await this._pool.query(queryCheckLike);
 
-    if (!resultCheck.rows.length) {
+    if (!resultCheck.rowCount) {
       const query = {
         text: 'INSERT INTO user_album_likes VALUES($1, $2, $3) RETURNING id',
         values: [id, userId, albumId],
@@ -124,9 +124,10 @@ class AlbumsService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Gagal menghapus like');
     }
+    await this._cacheService.delete(`album-likes:${albumId}`);
   }
 
   async getAlbumLikesById(albumId) {
@@ -145,7 +146,7 @@ class AlbumsService {
 
       const result = await this._pool.query(query);
 
-      if (!result.rows.length) {
+      if (!result.rowCount) {
         throw new NotFoundError('Gagal mengambil like');
       }
 

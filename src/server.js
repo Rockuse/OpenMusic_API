@@ -53,7 +53,7 @@ const init = async () => {
     }
     arr.push(element);
   }
-  console.log(arr);
+  // console.log(arr);
   server.auth.strategy('openmusic_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {
